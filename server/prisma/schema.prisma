@@ -1,0 +1,207 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  PARENT
+  TEACHER
+  ADMIN
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum GameType {
+  MEMORY_MATCH
+  IMAGE_QUIZ
+  WORD_QUIZ
+  AUDIO_QUIZ
+  SPELLING
+  TRUE_FALSE
+  DRAG_DROP
+  SURVIVAL
+  DAILY_CHALLENGE
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String   @unique
+  passwordHash  String
+  role          Role     @default(STUDENT)
+  avatar        String?
+  country       String?
+  age           Int?
+  xp            Int      @default(0)
+  level         Int      @default(1)
+  coins         Int      @default(0)
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  streak           Streak?
+  gameSessions     GameSession[]
+  favorites        Favorite[]
+  userAchievements UserAchievement[]
+  parentLinks      ParentChildLink[] @relation("Parent")
+  childLinks       ParentChildLink[] @relation("Child")
+  classroomMembers ClassroomMember[]
+  refreshTokens    RefreshToken[]
+
+  @@index([xp])
+  @@index([role])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ParentChildLink {
+  id        String   @id @default(cuid())
+  parentId  String
+  childId   String
+  createdAt DateTime @default(now())
+  parent    User     @relation("Parent", fields: [parentId], references: [id], onDelete: Cascade)
+  child     User     @relation("Child", fields: [childId], references: [id], onDelete: Cascade)
+
+  @@unique([parentId, childId])
+}
+
+model Category {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  name        String
+  description String?
+  icon        String?
+  color       String      @default("#6366f1")
+  sortOrder   Int         @default(0)
+  isPublic    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  flashcards  Flashcard[]
+}
+
+model Flashcard {
+  id           String     @id @default(cuid())
+  word         String
+  translation  String
+  pronunciation String?
+  exampleSentence String?
+  audioUrl     String?
+  imageUrl     String?
+  difficulty   Difficulty @default(BEGINNER)
+  categoryId   String
+  tags         String[]   @default([])
+  isPublic     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  category     Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  favorites    Favorite[]
+
+  @@index([categoryId])
+  @@index([word])
+  @@index([difficulty])
+}
+
+model Favorite {
+  id          String    @id @default(cuid())
+  userId      String
+  flashcardId String
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, flashcardId])
+}
+
+model GameSession {
+  id             String   @id @default(cuid())
+  userId         String
+  gameType       GameType
+  categoryId     String?
+  score          Int      @default(0)
+  correctAnswers Int      @default(0)
+  totalQuestions Int      @default(0)
+  xpEarned       Int      @default(0)
+  coinsEarned    Int      @default(0)
+  durationSec    Int      @default(0)
+  isPerfect      Boolean  @default(false)
+  completedAt    DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([gameType])
+  @@index([completedAt])
+}
+
+model Streak {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastActiveDate DateTime?
+  freezeCount   Int       @default(0)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  icon        String?
+  xpReward    Int      @default(0)
+  coinReward  Int      @default(0)
+  condition   String
+  createdAt   DateTime @default(now())
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
+
+model Classroom {
+  id          String            @id @default(cuid())
+  name        String
+  code        String            @unique
+  teacherId   String
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  members     ClassroomMember[]
+}
+
+model ClassroomMember {
+  id          String    @id @default(cuid())
+  classroomId String
+  userId      String
+  joinedAt    DateTime  @default(now())
+  classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([classroomId, userId])
+}
