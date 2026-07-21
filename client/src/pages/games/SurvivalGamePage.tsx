@@ -22,7 +22,7 @@ export default function SurvivalGamePage() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ['game-cards-survival'],
-    queryFn: () => contentApi.gameCards({ count: 30 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(undefined, 30).then((r) => r.data as Flashcard[]),
   });
 
   useEffect(() => {

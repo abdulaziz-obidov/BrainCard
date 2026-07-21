@@ -23,7 +23,7 @@ export default function ImageQuizPage() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ['game-cards-quiz', categoryId],
-    queryFn: () => contentApi.gameCards({ categoryId, count: 8 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(categoryId, 8).then((r) => r.data as Flashcard[]),
   });
 
   const totalRounds = Math.min(8, cards?.length ?? 8);

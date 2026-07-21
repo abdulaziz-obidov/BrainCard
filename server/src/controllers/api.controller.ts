@@ -244,6 +244,8 @@ const gameResultSchema = z.object({
     'DRAG_DROP',
     'SURVIVAL',
     'DAILY_CHALLENGE',
+    'HANGMAN',
+    'BOSS_CHALLENGE',
   ]),
   categoryId: z.string().optional(),
   score: z.number().int().min(0),

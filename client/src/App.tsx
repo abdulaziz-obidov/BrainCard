@@ -16,6 +16,10 @@ import WordQuizPage from './pages/games/WordQuizPage';
 import SpellingGamePage from './pages/games/SpellingGamePage';
 import TrueFalseGamePage from './pages/games/TrueFalseGamePage';
 import SurvivalGamePage from './pages/games/SurvivalGamePage';
+import AudioQuizPage from './pages/games/AudioQuizPage';
+import DragDropPage from './pages/games/DragDropPage';
+import BossChallengePage from './pages/games/BossChallengePage';
+import HangmanPage from './pages/games/HangmanPage';
 import LeaderboardPage, { ProfilePage } from './pages/LeaderboardPage';
 import AdminPage from './pages/AdminPage';
 import ParentDashboardPage from './pages/ParentDashboardPage';
@@ -44,6 +48,10 @@ export default function App() {
               <Route path="games/spelling" element={<SpellingGamePage />} />
               <Route path="games/true-false" element={<TrueFalseGamePage />} />
               <Route path="games/survival" element={<SurvivalGamePage />} />
+              <Route path="games/audio-quiz" element={<AudioQuizPage />} />
+              <Route path="games/drag-drop" element={<DragDropPage />} />
+              <Route path="games/boss-challenge" element={<BossChallengePage />} />
+              <Route path="games/hangman" element={<HangmanPage />} />
               <Route path="leaderboard" element={<LeaderboardPage />} />
               <Route path="dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

@@ -19,7 +19,7 @@ export default function SpellingGamePage() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ['game-cards-spelling'],
-    queryFn: () => contentApi.gameCards({ count: 8 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(undefined, 8).then((r) => r.data as Flashcard[]),
   });
 
   const totalRounds = Math.min(8, cards?.length ?? 8);

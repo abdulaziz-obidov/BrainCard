@@ -27,7 +27,7 @@ export default function MemoryGamePage() {
 
   const { data: flashcards, isLoading } = useQuery({
     queryKey: ['game-cards-memory'],
-    queryFn: () => contentApi.gameCards({ count: 6 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(undefined, 6).then((r) => r.data as Flashcard[]),
   });
 
   useEffect(() => {

@@ -56,11 +56,39 @@ export default function FlashCardView({ card, flipped = false, onFlip, compact =
   );
 }
 
+// Force load voices
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+}
+
 export function speakWord(word: string) {
+  try {
+    // 1. Try to use a reliable public dictionary API for real human pronunciation (US English)
+    const audio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+    
+    audio.play().catch((err) => {
+      console.warn('Audio API failed, falling back to SpeechSynthesis:', err);
+      fallbackSpeak(word);
+    });
+  } catch (err) {
+    console.warn('Audio object failed, falling back:', err);
+    fallbackSpeak(word);
+  }
+}
+
+function fallbackSpeak(word: string) {
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(word);
     utterance.lang = 'en-US';
     utterance.rate = 0.85;
-    speechSynthesis.speak(utterance);
+    
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en-') && v.name.includes('Google')) || voices.find(v => v.lang.startsWith('en-'));
+    if (enVoice) utterance.voice = enVoice;
+    
+    // @ts-ignore
+    window._latestUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
   }
 }

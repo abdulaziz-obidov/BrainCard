@@ -45,7 +45,7 @@ export default function TrueFalseGamePage() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ['game-cards-tf'],
-    queryFn: () => contentApi.gameCards({ count: 10 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(undefined, 10).then((r) => r.data as Flashcard[]),
   });
 
   useEffect(() => {

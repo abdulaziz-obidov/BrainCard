@@ -87,7 +87,7 @@ export async function refresh(refreshToken: string) {
     throw new AppError(401, 'Refresh token expired');
   }
 
-  await prisma.refreshToken.delete({ where: { id: stored.id } });
+  await prisma.refreshToken.deleteMany({ where: { id: stored.id } });
   return createTokens(stored.user.id, stored.user.email, stored.user.role);
 }
 

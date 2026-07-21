@@ -17,7 +17,7 @@ export default function WordQuizPage() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ['game-cards-word'],
-    queryFn: () => contentApi.gameCards({ count: 8 }).then((r) => r.data as Flashcard[]),
+    queryFn: () => contentApi.gameCards(undefined, 8).then((r) => r.data as Flashcard[]),
   });
 
   const totalRounds = Math.min(8, cards?.length ?? 8);

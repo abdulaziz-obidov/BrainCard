@@ -11,7 +11,9 @@ export type GameType =
   | 'TRUE_FALSE'
   | 'DRAG_DROP'
   | 'SURVIVAL'
-  | 'DAILY_CHALLENGE';
+  | 'DAILY_CHALLENGE'
+  | 'HANGMAN'
+  | 'BOSS_CHALLENGE';
 
 export interface User {
   id: string;

@@ -50,6 +50,34 @@ const games: Array<{
     desc: 'Keep going until your first mistake',
     color: 'border-red-200 hover:border-red-400 bg-red-50',
   },
+  {
+    to: '/games/audio-quiz',
+    icon: '🔊',
+    name: 'Audio Quiz',
+    desc: 'Listen to the word and pick translation',
+    color: 'border-cyan-200 hover:border-cyan-400 bg-cyan-50',
+  },
+  {
+    to: '/games/drag-drop',
+    icon: '🖱️',
+    name: 'Drag & Drop',
+    desc: 'Match words to their translations',
+    color: 'border-indigo-200 hover:border-indigo-400 bg-indigo-50',
+  },
+  {
+    to: '/games/hangman',
+    icon: '🎯',
+    name: 'Hangman',
+    desc: 'Guess the word letter by letter',
+    color: 'border-violet-200 hover:border-violet-400 bg-violet-50',
+  },
+  {
+    to: '/games/boss-challenge',
+    icon: '👑',
+    name: 'Boss Challenge',
+    desc: '30 questions in 5 minutes — the ultimate test!',
+    color: 'border-amber-200 hover:border-amber-400 bg-amber-50',
+  },
 ];
 
 export default function GamesPage() {
