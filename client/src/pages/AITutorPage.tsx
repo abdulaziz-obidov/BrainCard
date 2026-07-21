@@ -24,9 +24,20 @@ const speakSentence = (text: string) => {
 };
 
 export default function AITutorPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', content: "Hello! I'm your BrainCards AI Tutor. How can I help you with your English today?" }
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem('braincards_ai_history');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse AI history');
+      }
+    }
+    return [
+      { role: 'model', content: "Hello! I'm your BrainCards AI Tutor. How can I help you with your English today?" }
+    ];
+  });
+  
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +47,7 @@ export default function AITutorPage() {
 
   useEffect(() => {
     scrollToBottom();
+    localStorage.setItem('braincards_ai_history', JSON.stringify(messages));
   }, [messages]);
 
   const chatMutation = useMutation({
@@ -71,6 +83,17 @@ export default function AITutorPage() {
             <p className="text-primary-100 text-xs">Always here to help</p>
           </div>
         </div>
+        <button 
+          onClick={() => {
+            if (confirm('Clear chat history?')) {
+              localStorage.removeItem('braincards_ai_history');
+              setMessages([{ role: 'model', content: "Hello! I'm your BrainCards AI Tutor. How can I help you with your English today?" }]);
+            }
+          }}
+          className="text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors text-sm font-medium"
+        >
+          Clear Chat
+        </button>
       </div>
 
       {/* Chat Area */}
