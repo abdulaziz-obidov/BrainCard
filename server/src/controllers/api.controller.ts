@@ -255,6 +255,28 @@ const gameResultSchema = z.object({
   comboMax: z.number().int().min(0).optional(),
 });
 
+import * as aiService from '../services/ai.service.js';
+
+export async function chatWithAI(req: AuthRequest, res: Response, next: NextFunction) {
+  try {
+    const { history, message } = req.body;
+    
+    if (!message) {
+      res.status(400).json({ status: 'error', message: 'Message is required' });
+      return;
+    }
+
+    const aiResponse = await aiService.generateChatResponse(history || [], message);
+    
+    res.json({
+      status: 'success',
+      data: { response: aiResponse }
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function submitGame(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const data = gameResultSchema.parse(req.body);

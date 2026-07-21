@@ -33,6 +33,7 @@ export default function Layout() {
             <NavLink to="/" end className={navLinkClass}>Home</NavLink>
             <NavLink to="/categories" className={navLinkClass}>Categories</NavLink>
             <NavLink to="/games" className={navLinkClass}>Games</NavLink>
+            <NavLink to="/ai-tutor" className={navLinkClass}>AI Tutor</NavLink>
             <NavLink to="/leaderboard" className={navLinkClass}>Leaderboard</NavLink>
             {isAuthenticated && (
               <>
@@ -98,6 +99,7 @@ export default function Layout() {
                 <NavLink to="/" end className={mobileNavLinkClass} onClick={closeMenu}>🏠 Home</NavLink>
                 <NavLink to="/categories" className={mobileNavLinkClass} onClick={closeMenu}>📚 Categories</NavLink>
                 <NavLink to="/games" className={mobileNavLinkClass} onClick={closeMenu}>🎮 Games</NavLink>
+                <NavLink to="/ai-tutor" className={mobileNavLinkClass} onClick={closeMenu}>🤖 AI Tutor</NavLink>
                 <NavLink to="/leaderboard" className={mobileNavLinkClass} onClick={closeMenu}>🏆 Leaderboard</NavLink>
                 {isAuthenticated && (
                   <>

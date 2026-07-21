@@ -20,6 +20,7 @@ import AudioQuizPage from './pages/games/AudioQuizPage';
 import DragDropPage from './pages/games/DragDropPage';
 import BossChallengePage from './pages/games/BossChallengePage';
 import HangmanPage from './pages/games/HangmanPage';
+import AITutorPage from './pages/AITutorPage';
 import LeaderboardPage, { ProfilePage } from './pages/LeaderboardPage';
 import AdminPage from './pages/AdminPage';
 import ParentDashboardPage from './pages/ParentDashboardPage';
@@ -52,6 +53,7 @@ export default function App() {
               <Route path="games/drag-drop" element={<DragDropPage />} />
               <Route path="games/boss-challenge" element={<BossChallengePage />} />
               <Route path="games/hangman" element={<HangmanPage />} />
+              <Route path="ai-tutor" element={<AITutorPage />} />
               <Route path="leaderboard" element={<LeaderboardPage />} />
               <Route path="dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

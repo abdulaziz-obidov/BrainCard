@@ -37,6 +37,9 @@ router.get('/games/cards', optionalAuth, api.getGameCards);
 router.get('/games/daily', api.getDailyChallenge);
 router.post('/games/submit', authenticate, api.submitGame);
 
+// AI Routes
+router.post('/ai/chat', authenticate, api.chatWithAI);
+
 // User data
 router.get('/stats', authenticate, api.getStats);
 router.get('/favorites', authenticate, api.getFavorites);

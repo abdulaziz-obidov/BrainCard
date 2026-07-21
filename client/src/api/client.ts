@@ -60,6 +60,8 @@ export const contentApi = {
   gameCards: (categoryId?: string, count?: number) => api.get('/games/cards', { params: { categoryId, count } }),
   dailyChallenge: () => api.get('/games/daily'),
   submitGame: (data: unknown) => api.post('/games/submit', data),
+  chatWithAI: (history: { role: 'user' | 'model'; content: string }[], message: string) =>
+    api.post('/ai/chat', { history, message }),
   stats: () => api.get('/stats'),
   leaderboard: (limit = 20) => api.get('/leaderboard', { params: { limit } }),
   achievements: () => api.get('/achievements'),
