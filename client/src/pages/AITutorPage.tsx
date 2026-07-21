@@ -9,6 +9,20 @@ interface Message {
   content: string;
 }
 
+const speakSentence = (text: string) => {
+  if (!text) return;
+  // Google Translate TTS (up to 200 chars)
+  const safeText = text.length > 200 ? text.substring(0, 200) : text;
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(safeText)}`;
+  const audio = new Audio(url);
+  audio.play().catch(() => {
+    // Fallback to browser TTS
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    window.speechSynthesis.speak(utterance);
+  });
+};
+
 export default function AITutorPage() {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', content: "Hello! I'm your BrainCards AI Tutor. How can I help you with your English today?" }
@@ -73,7 +87,7 @@ export default function AITutorPage() {
                 <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
                 {msg.role === 'model' && (
                   <button 
-                    onClick={() => speakWord(msg.content)}
+                    onClick={() => speakSentence(msg.content)}
                     className="mt-2 text-xs text-primary-500 hover:text-primary-600 flex items-center gap-1 font-medium transition-colors"
                   >
                     🔊 Listen
